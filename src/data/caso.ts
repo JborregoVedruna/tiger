@@ -441,8 +441,8 @@ export const LUGARES: Lugar[] = [
     relacion: 'A esa hora Tiger empieza a pedir su comida con maullidos.',
     detalle: 'Si llegas tarde, te quedas sin cita hasta la tarde.',
     pistaInocente:
-      'a las 13:30 la veterinaria ya estaba en el chiringuito tomándose el vermut: ese día cerró antes',
-    comoFue: 'Lo llevaron a las 13:30, justo antes de que la clínica cerrara para comer.',
+      'a las 13:30 la veterinaria estaba en su pausa del almuerzo, tomándose el vermut en el chiringuito, con la persiana de la clínica bajada hasta las 14:30',
+    comoFue: 'Lo llevaron a las 13:30, justo cuando la veterinaria se iba a la pausa del almuerzo.',
   },
   {
     id: 'h1500',
