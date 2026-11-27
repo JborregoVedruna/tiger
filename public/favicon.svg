@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#062a3a"/>
+  <!-- Orejas -->
+  <path d="M14 26 L18 10 L28 20 Z" fill="#d9dee2"/>
+  <path d="M50 26 L46 10 L36 20 Z" fill="#d9dee2"/>
+  <path d="M17.5 22 L19.5 14 L24.5 19 Z" fill="#f4b8c4"/>
+  <path d="M46.5 22 L44.5 14 L39.5 19 Z" fill="#f4b8c4"/>
+  <!-- Cabeza -->
+  <ellipse cx="32" cy="36" rx="20" ry="17" fill="#d9dee2"/>
+  <!-- Rayas grises -->
+  <path d="M32 20 v7 M26 21 l2 6 M38 21 l-2 6" stroke="#9aa4ac" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M13 34 h6 M13 39 h5 M51 34 h-6 M51 39 h-5" stroke="#9aa4ac" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Ojos -->
+  <ellipse cx="24.5" cy="34" rx="3.6" ry="4.4" fill="#7ff0e3"/>
+  <ellipse cx="39.5" cy="34" rx="3.6" ry="4.4" fill="#7ff0e3"/>
+  <ellipse cx="24.5" cy="34.5" rx="1.2" ry="3.2" fill="#062a3a"/>
+  <ellipse cx="39.5" cy="34.5" rx="1.2" ry="3.2" fill="#062a3a"/>
+  <!-- Nariz y boca -->
+  <path d="M29.5 41 h5 l-2.5 3 z" fill="#f4b8c4"/>
+  <path d="M32 44 q-2.5 3 -5 1.5 M32 44 q2.5 3 5 1.5" stroke="#3a1410" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+</svg>

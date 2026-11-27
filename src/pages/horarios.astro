@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavExpediente from '../components/NavExpediente.astro';
+import Scrollytelling from '../components/Scrollytelling.astro';
+import PortadaExpediente from '../components/PortadaExpediente.astro';
+import FichaCinematica from '../components/FichaCinematica.astro';
+import SiguienteExpediente from '../components/SiguienteExpediente.astro';
+import { LUGARES } from '../data/caso.ts';
+---
+
+<Layout title="Franjas horarias · ¿Quién llevó a Tiger al veterinario?">
+  <NavExpediente actual="horarios" />
+  <Scrollytelling>
+    <PortadaExpediente
+      antetitulo="Expediente · 3 de 3"
+      titulo="Horarios"
+      texto="La clínica de Barbate abre a las 9:00 y cierra a las 18:00. Tiger entró por su puerta a una de estas seis horas."
+      tono="#a855f7"
+    />
+    {
+      LUGARES.map((l, i) => (
+        <FichaCinematica
+          elemento={l}
+          indice={i + 1}
+          total={LUGARES.length}
+          categoria="Franja horaria"
+          bloques={[
+            { titulo: 'En la clínica', texto: l.descripcion },
+            { titulo: 'Y Tiger, mientras', texto: l.relacion },
+            { titulo: 'Un detalle', texto: l.detalle },
+          ]}
+        />
+      ))
+    }
+    <SiguienteExpediente siguiente={{ href: '/personajes', texto: 'Volver a los sospechosos' }} />
+  </Scrollytelling>
+</Layout>

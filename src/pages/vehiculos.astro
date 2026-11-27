@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavExpediente from '../components/NavExpediente.astro';
+import Scrollytelling from '../components/Scrollytelling.astro';
+import PortadaExpediente from '../components/PortadaExpediente.astro';
+import FichaCinematica from '../components/FichaCinematica.astro';
+import SiguienteExpediente from '../components/SiguienteExpediente.astro';
+import { ARMAS } from '../data/caso.ts';
+---
+
+<Layout title="Vehículos · ¿Quién llevó a Tiger al veterinario?">
+  <NavExpediente actual="vehiculos" />
+  <Scrollytelling>
+    <PortadaExpediente
+      antetitulo="Expediente · 2 de 3"
+      titulo="Vehículos"
+      texto="De Zahora a Barbate hay seis formas de llegar. En una de ellas viajó Tiger, y no precisamente contento."
+      tono="#22d3ee"
+    />
+    {
+      ARMAS.map((a, i) => (
+        <FichaCinematica
+          elemento={a}
+          indice={i + 1}
+          total={ARMAS.length}
+          categoria="Vehículo"
+          bloques={[
+            { titulo: 'Descripción', texto: a.descripcion },
+            { titulo: 'Relación con Tiger', texto: a.relacion },
+            { titulo: 'La pista que dejaría', texto: a.forense },
+          ]}
+        />
+      ))
+    }
+    <SiguienteExpediente siguiente={{ href: '/horarios', texto: 'Siguiente: las franjas horarias' }} />
+  </Scrollytelling>
+</Layout>

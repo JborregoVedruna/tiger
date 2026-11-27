@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Mar: fondos (antes "noche") */
+  --color-noche-950: #03141c;
+  --color-noche-900: #062a3a;
+  --color-noche-800: #0b3a4f;
+  --color-noche-700: #124a63;
+  --color-noche-600: #1d6280;
+
+  /* Coral de atardecer: acentos y peligro (antes "fucsia") */
+  --color-fucsia-950: #3a1410;
+  --color-fucsia-900: #5c2018;
+  --color-fucsia-800: #8f3324;
+  --color-fucsia-700: #d4553c;
+  --color-fucsia-600: #ff7a59;
+
+  /* Arena: botones y textos destacados (antes "champán") */
+  --color-champan-300: #fff4d6;
+  --color-champan-400: #ffe3a3;
+  --color-champan-500: #f4c97a;
+  --color-champan-600: #d9a54e;
+
+  /* Turquesa del agua (antes "cian") */
+  --color-cian-400: #7ff0e3;
+  --color-cian-500: #2ec4b6;
+
+  --color-crema: #fdf8ee;
+
+  --font-display: 'Futura', 'Century Gothic', 'Avenir Next', 'Trebuchet MS', system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root {
+  /* Color de la "iluminación" de la escena actual; GSAP lo anima al hacer scroll. */
+  --tono: #2ec4b6;
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-noche-950);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Fondo fijo que cambia de luz según la sección visible. */
+.escenario {
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 70% at 50% -10%, color-mix(in srgb, var(--tono) 60%, transparent), transparent 65%),
+    radial-gradient(90% 60% at 100% 110%, color-mix(in srgb, var(--tono) 30%, transparent), transparent 70%),
+    var(--color-noche-950);
+}
+
+/* Reflejos de sol sobre el agua, girando lentamente */
+.escenario::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  opacity: 0.22;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-cian-500) 70%, transparent) 12deg,
+    transparent 30deg,
+    transparent 110deg,
+    color-mix(in srgb, var(--color-fucsia-600) 70%, transparent) 125deg,
+    transparent 145deg,
+    transparent 220deg,
+    color-mix(in srgb, var(--color-champan-400) 60%, transparent) 232deg,
+    transparent 250deg
+  );
+  filter: blur(40px);
+  animation: focos 26s linear infinite;
+}
+
+@keyframes focos {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Olas suaves al pie de la pantalla */
+.escenario {
+  background-image:
+    radial-gradient(120% 70% at 50% -10%, color-mix(in srgb, var(--tono) 55%, transparent), transparent 65%),
+    radial-gradient(70% 40% at 85% 8%, rgb(255 227 163 / 0.35), transparent 70%),
+    linear-gradient(180deg, transparent 70%, rgb(46 196 182 / 0.12) 100%),
+    linear-gradient(180deg, #062a3a 0%, #03141c 100%);
+}
+
+/* Grano sutil (como arena) */
+.escenario::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.texto-neon {
+  background: linear-gradient(100deg, #7ff0e3 0%, #ffe3a3 45%, #ff7a59 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgb(255 122 89 / 0.35));
+}
+
+.brillo-neon {
+  text-shadow:
+    0 0 8px rgb(255 122 89 / 0.8),
+    0 0 24px rgb(255 122 89 / 0.45);
+}
+
+.contorno {
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--t, #ff7a59) 80%, white 10%);
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--t, #ff7a59) 50%, transparent));
+}
+
+/* Modales del juego */
+.modal-fondo {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.modal-fondo .modal-panel {
+  transform: translateY(24px);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.modal-fondo.abierto {
+  opacity: 1;
+}
+.modal-fondo.abierto .modal-panel {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

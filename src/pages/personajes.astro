@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavExpediente from '../components/NavExpediente.astro';
+import Scrollytelling from '../components/Scrollytelling.astro';
+import PortadaExpediente from '../components/PortadaExpediente.astro';
+import FichaCinematica from '../components/FichaCinematica.astro';
+import SiguienteExpediente from '../components/SiguienteExpediente.astro';
+import { SOSPECHOSOS } from '../data/caso.ts';
+---
+
+<Layout title="Sospechosos · ¿Quién llevó a Tiger al veterinario?">
+  <NavExpediente actual="personajes" />
+  <Scrollytelling>
+    <PortadaExpediente
+      antetitulo="Expediente · 1 de 3"
+      titulo="Sospechosos"
+      texto="Seis personas que conocen a Tiger. Todas tenían un motivo para llevarlo a Barbate; solo una lo hizo."
+      tono="#b0127f"
+    />
+    {
+      SOSPECHOSOS.map((s, i) => (
+        <FichaCinematica
+          elemento={s}
+          indice={i + 1}
+          total={SOSPECHOSOS.length}
+          categoria="Sospechoso"
+          subtitulo={s.nombreCompleto}
+          bloques={[
+            { titulo: 'Relación con Tiger', texto: s.relacion },
+            { titulo: 'Motivo', texto: s.motivo },
+            { titulo: 'Coartada declarada', texto: s.coartada },
+            { titulo: 'Lo que no cuenta', texto: s.secreto },
+          ]}
+        />
+      ))
+    }
+    <SiguienteExpediente siguiente={{ href: '/vehiculos', texto: 'Siguiente: los vehículos' }} />
+  </Scrollytelling>
+</Layout>

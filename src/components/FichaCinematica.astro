@@ -1,0 +1,102 @@
+---
+import type { Elemento } from '../data/caso.ts';
+import { estiloTitulo } from '../lib/tituloFluido.ts';
+
+interface Bloque {
+  titulo: string;
+  texto: string;
+}
+
+interface Props {
+  elemento: Elemento;
+  indice: number;
+  total: number;
+  categoria: string;
+  subtitulo?: string;
+  bloques: Bloque[];
+}
+
+const { elemento, indice, total, categoria, subtitulo, bloques } = Astro.props;
+const numero = String(indice).padStart(2, '0');
+const lado = indice % 2 === 0 ? 'izquierda' : 'derecha';
+---
+
+<section
+  id={elemento.id}
+  data-escena
+  data-tono={elemento.tono}
+  data-indice={indice}
+  aria-labelledby={`t-${elemento.id}`}
+  class="relative flex min-h-svh items-center overflow-hidden py-28"
+  style={`--t:${elemento.tono}`}
+>
+  <!-- Monograma gigante con parallax -->
+  <div
+    data-mono
+    aria-hidden="true"
+    class:list={[
+      'contorno pointer-events-none absolute top-1/2 -translate-y-1/2 font-display leading-none select-none',
+      'text-[62vw] sm:text-[44vw] lg:text-[34vw]',
+      lado === 'izquierda' ? '-left-[6vw]' : '-right-[6vw]',
+    ]}
+  >
+    {elemento.monograma}
+  </div>
+
+  <!-- Haz de luz -->
+  <div
+    data-foco
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-y-0 left-1/4 w-1/2 -skew-x-12 opacity-0 blur-2xl"
+    style={`background: linear-gradient(90deg, transparent, color-mix(in srgb, ${elemento.tono} 35%, transparent), transparent)`}
+  >
+  </div>
+
+  <div class="relative mx-auto w-full max-w-5xl px-5 sm:px-8">
+    <p data-anim class="font-sans text-[11px] font-bold tracking-[0.35em] text-champan-500 uppercase">
+      {numero} / {String(total).padStart(2, '0')} · {categoria}
+    </p>
+
+    <h2
+      id={`t-${elemento.id}`}
+      data-revelar
+      class="mt-3 py-[0.06em] font-display leading-[0.95] font-extrabold tracking-tight text-crema uppercase"
+      style={estiloTitulo(elemento.nombre, 14, 8.5)}
+    >
+      {elemento.nombre}
+    </h2>
+
+    {subtitulo && <p data-anim class="mt-3 font-sans text-sm text-crema/60">{subtitulo}</p>}
+
+    <p data-anim class="mt-5 max-w-xl font-display text-xl leading-snug text-champan-400 italic sm:text-2xl">
+      «{elemento.lema}»
+    </p>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:gap-12">
+      <dl
+        data-anim
+        class="grid grid-cols-2 gap-px self-start overflow-hidden rounded-2xl border border-champan-500/20 bg-champan-500/20"
+      >
+        {
+          elemento.ficha.map((d) => (
+            <div class="bg-noche-950/85 p-4 backdrop-blur">
+              <dt class="font-sans text-[10px] font-bold tracking-[0.2em] text-champan-500 uppercase">{d.etiqueta}</dt>
+              <dd class="mt-1 font-sans text-sm leading-snug text-crema">{d.valor}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="space-y-6">
+        {
+          bloques.map((b) => (
+            <article data-anim class="border-l-2 pl-4" style={`border-color: ${elemento.tono}`}>
+              <h3 class="font-sans text-[11px] font-bold tracking-[0.25em] text-champan-500 uppercase">{b.titulo}</h3>
+              <p class="mt-2 font-display text-[17px] leading-relaxed text-crema/90 sm:text-lg">{b.texto}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

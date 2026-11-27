@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BotonPrincipal from '../components/BotonPrincipal.astro';
+import { ruta } from '../lib/ruta.ts';
+
+const opciones = [
+  {
+    valor: 'predeterminado',
+    titulo: 'Predeterminado',
+    texto: 'Siempre la misma historia, con los mismos puzles y las mismas pistas. Ideal para que todo el grupo juegue el mismo caso y compare.',
+  },
+  {
+    valor: 'aleatorio',
+    titulo: 'Aleatorio',
+    texto: 'Cada partida elige un sospechoso, un vehículo y una hora distintos, y genera puzles nuevos. Nunca sabrás quién fue hasta el final.',
+  },
+];
+---
+
+<Layout title="Ajustes · ¿Quién llevó a Tiger al veterinario?">
+  <main class="mx-auto flex min-h-svh w-full max-w-md flex-col px-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+    <a href={ruta('/')} class="-ml-2 flex min-h-11 w-fit items-center gap-1 rounded-lg px-2 font-sans text-sm font-semibold text-cian-400">
+      <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+      Inicio
+    </a>
+
+    <p class="mt-8 font-sans text-[11px] font-bold tracking-[0.35em] text-cian-400 uppercase">Ajustes</p>
+    <h1 class="texto-neon mt-2 py-1 font-display text-4xl leading-tight font-extrabold">Tipo de historia</h1>
+    <p class="mt-3 font-sans text-sm leading-relaxed text-crema/70">
+      Elige cómo se genera el caso cada vez que empiezas a jugar.
+    </p>
+
+    <fieldset class="mt-8 grid gap-3">
+      <legend class="sr-only">Tipo de historia</legend>
+      {
+        opciones.map((o) => (
+          <label class="opcion group relative flex min-h-24 cursor-pointer gap-4 rounded-2xl border border-noche-600 bg-noche-900/70 p-4 backdrop-blur transition has-[:checked]:border-fucsia-600 has-[:checked]:bg-fucsia-950/70 has-[:checked]:shadow-lg has-[:checked]:shadow-fucsia-600/20">
+            <input type="radio" name="modo" value={o.valor} class="peer sr-only" />
+            <span
+              class="mt-1 grid size-6 shrink-0 place-items-center rounded-full border-2 border-noche-600 transition peer-checked:border-fucsia-600 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cian-400"
+              aria-hidden="true"
+            >
+              <span class="size-2.5 scale-0 rounded-full bg-fucsia-600 transition group-has-[:checked]:scale-100" />
+            </span>
+            <span>
+              <span class="block font-display text-xl font-bold text-crema">{o.titulo}</span>
+              <span class="mt-1 block font-sans text-sm leading-relaxed text-crema/70">{o.texto}</span>
+            </span>
+          </label>
+        ))
+      }
+    </fieldset>
+
+    <p id="estado-ajustes" class="mt-4 min-h-10 font-sans text-sm text-champan-400" role="status" aria-live="polite"></p>
+
+    <p class="font-sans text-xs leading-relaxed text-crema/50">
+      Cambiar el tipo de historia empieza una partida nueva y se pierde el progreso de la actual.
+    </p>
+
+    <div class="mt-auto grid gap-3 pt-10">
+      <BotonPrincipal href="/jugar" texto="Iniciar el juego" />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { guardarModo, leerModo, type ModoHistoria } from '../lib/ajustes.ts';
+
+  const radios = document.querySelectorAll<HTMLInputElement>('input[name="modo"]');
+  const estado = document.getElementById('estado-ajustes');
+  const actual = leerModo();
+  radios.forEach((r) => {
+    r.checked = r.value === actual;
+    r.addEventListener('change', () => {
+      if (!r.checked) return;
+      guardarModo(r.value as ModoHistoria);
+      if (estado) {
+        estado.textContent =
+          r.value === 'predeterminado'
+            ? 'Guardado: jugarás la historia predeterminada.'
+            : 'Guardado: cada partida será un misterio distinto.';
+      }
+    });
+  });
+</script>

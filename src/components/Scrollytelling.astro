@@ -1,0 +1,12 @@
+---
+// Envoltorio de las páginas con scrollytelling: activa GSAP + Lenis una sola vez.
+---
+
+<div class="relative">
+  <slot />
+</div>
+
+<script>
+  import { iniciarCine } from '../scripts/cine.ts';
+  iniciarCine();
+</script>

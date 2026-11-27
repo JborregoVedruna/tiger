@@ -1,0 +1,118 @@
+---
+import BotonJugar from '../components/BotonJugar.astro';
+import { ruta } from '../lib/ruta.ts';
+import Layout from '../layouts/Layout.astro';
+import BotonPrincipal from '../components/BotonPrincipal.astro';
+import Scrollytelling from '../components/Scrollytelling.astro';
+import { HISTORIA, SOSPECHOSOS } from '../data/caso.ts';
+---
+
+<Layout title="¿Quién llevó a Tiger al veterinario? · Zahora, Los Caños y Barbate">
+  <Scrollytelling>
+    <!-- Portada -->
+    <section
+      data-escena
+      data-tono="#b0127f"
+      class="relative flex min-h-svh flex-col overflow-hidden px-5 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+    >
+      <div
+        data-mono
+        aria-hidden="true"
+        class="contorno pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[90vw] leading-none select-none sm:text-[60vh]"
+        style="--t:#ff2e93"
+      >
+        P
+      </div>
+
+      <p data-anim class="relative text-center font-sans text-[11px] font-bold tracking-[0.4em] text-champan-500 uppercase">
+        Zahora · Los Caños · Barbate
+      </p>
+
+      <div class="relative my-auto py-10 text-center">
+        <h1
+          data-anim
+          class="texto-neon py-1 font-display text-[clamp(2.4rem,10.5vw,6.5rem)] leading-[0.95] font-extrabold tracking-tight"
+        >
+          ¿Quién llevó a Tiger<br />al veterinario?
+        </h1>
+        <p data-anim class="mt-6 font-sans text-xs tracking-[0.3em] text-crema/60 uppercase">{HISTORIA.fecha}</p>
+        <p data-anim class="mx-auto mt-6 max-w-sm font-display text-lg leading-relaxed text-crema/85 italic">
+          Un gato gris clarito, una amiga que se encarga de todo y alguien que se le ha adelantado. Begoña, juglar y mamporrera de la Janda, va a averiguar quién.
+        </p>
+      </div>
+
+      <div data-anim class="relative mx-auto grid w-full max-w-md gap-3">
+        <BotonPrincipal href="/personajes" texto="Expediente del caso" detalle="Sospechosos, armas y lugares" variante="fucsia" />
+        <BotonJugar detalle="15 misiones · 1 acusación" />
+        <BotonPrincipal href="/ajustes" texto="Ajustes" detalle="Historia predeterminada o aleatoria" variante="fantasma" />
+        <a
+          href="#historia"
+          class="mt-1 inline-flex min-h-11 items-center justify-center gap-2 font-sans text-xs tracking-[0.25em] text-crema/50 uppercase"
+        >
+          Lee la historia
+          <svg viewBox="0 0 24 24" class="size-4 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Historia -->
+    {
+      HISTORIA.secciones.map((seccion, i) => (
+        <section
+          id={i === 0 ? 'historia' : undefined}
+          data-escena
+          data-tono={['#b0127f', '#1f2a6b', '#4a0b3a', '#22d3ee'][i]}
+          class="relative flex min-h-[85svh] items-center px-5 py-20"
+        >
+          <div class="mx-auto max-w-2xl">
+            <p data-anim class="font-sans text-[11px] font-bold tracking-[0.35em] text-cian-400 uppercase">
+              {seccion.etiqueta}
+            </p>
+            <p data-anim class="mt-5 font-display text-[clamp(1.35rem,5.2vw,2.4rem)] leading-snug font-semibold text-crema">
+              {seccion.texto}
+            </p>
+          </div>
+        </section>
+      ))
+    }
+
+    <!-- Invitados -->
+    <section data-escena data-tono="#4a0b3a" class="relative px-5 py-20">
+      <div class="mx-auto max-w-3xl">
+        <p data-anim class="font-sans text-[11px] font-bold tracking-[0.35em] text-champan-500 uppercase">Los sospechosos</p>
+        <ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {
+            SOSPECHOSOS.map((s) => (
+              <li data-anim>
+                <a
+                  href={ruta(`/personajes#${s.id}`)}
+                  class="block min-h-24 rounded-2xl border border-champan-500/20 bg-noche-900/70 p-4 transition hover:border-champan-500/60"
+                  style={`box-shadow: inset 0 -40px 60px -40px ${s.tono}`}
+                >
+                  <span class="font-display text-xl text-crema">{s.nombre}</span>
+                  <span class="mt-1 block font-sans text-xs text-crema/55">{s.ficha[1].valor}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- Llamada final -->
+    <section data-escena data-tono="#b0127f" class="relative flex min-h-[80svh] items-center px-5 py-24">
+      <div class="mx-auto w-full max-w-md text-center">
+        <h2 data-anim class="texto-neon font-display text-5xl leading-tight">La clínica cierra a las 18:00.</h2>
+        <p data-anim class="mt-4 font-sans text-sm leading-relaxed text-crema/70">
+          Resuelve doce misiones por Zahora, Los Caños y Barbate, escucha tres testimonios y señala quién llevó a Tiger, en qué y a qué hora.
+        </p>
+        <div data-anim class="mt-10 grid gap-3">
+          <BotonPrincipal href="/personajes" texto="Expediente del caso" variante="fucsia" />
+          <BotonJugar />
+        </div>
+      </div>
+    </section>
+  </Scrollytelling>
+</Layout>

@@ -1,0 +1,53 @@
+---
+import { ruta } from '../lib/ruta.ts';
+interface Props {
+  actual: 'personajes' | 'vehiculos' | 'horarios';
+}
+const { actual } = Astro.props;
+const enlaces = [
+  { href: ruta('/personajes'), id: 'personajes', texto: 'Sospechosos' },
+  { href: ruta('/vehiculos'), id: 'vehiculos', texto: 'Vehículos' },
+  { href: ruta('/horarios'), id: 'horarios', texto: 'Horarios' },
+] as const;
+---
+
+<header class="fixed inset-x-0 top-0 z-30 border-b border-champan-500/15 bg-noche-950/75 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+  <nav class="mx-auto flex h-14 max-w-5xl items-center gap-0.5 px-2 sm:gap-1 sm:px-5" aria-label="Expediente del caso">
+    <a href={ruta("/")} class="grid size-10 shrink-0 place-items-center rounded-full text-champan-400" aria-label="Volver al inicio">
+      <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </a>
+    <ul class="flex min-w-0 flex-1 items-center justify-center sm:gap-1">
+      {
+        enlaces.map((e) => (
+          <li>
+            <a
+              href={e.href}
+              aria-current={actual === e.id ? 'page' : undefined}
+              class:list={[
+                'flex min-h-11 items-center rounded-full px-2 font-sans text-[11px] font-bold tracking-wide uppercase transition sm:px-3 sm:text-sm sm:tracking-wider',
+                actual === e.id ? 'bg-champan-500/15 text-champan-400' : 'text-crema/60 hover:text-crema',
+              ]}
+            >
+              {e.texto}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href={ruta("/jugar")}
+      class="flex min-h-11 shrink-0 items-center rounded-full bg-champan-500 px-3 font-sans text-[11px] font-bold tracking-wider text-noche-950 uppercase sm:px-4 sm:text-sm"
+    >
+      Jugar
+    </a>
+  </nav>
+  <div class="h-px origin-left bg-champan-500" data-progreso style="transform: scaleX(0)"></div>
+</header>
+<p
+  data-contador
+  class="pointer-events-none fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 font-sans text-xs font-bold tracking-[0.3em] text-champan-400/80 opacity-0 transition-opacity"
+  aria-hidden="true"
+>
+</p>

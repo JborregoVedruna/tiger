@@ -1,0 +1,49 @@
+---
+// Botón de jugar: si hay una partida empezada, ofrece continuarla o empezar una nueva.
+import BotonPrincipal from './BotonPrincipal.astro';
+import { ruta } from '../lib/ruta.ts';
+
+interface Props {
+  detalle?: string;
+}
+const { detalle } = Astro.props;
+---
+
+<div class="boton-jugar grid gap-3">
+  <div data-sin-partida>
+    <BotonPrincipal href="/jugar" texto="Iniciar el juego" detalle={detalle} />
+  </div>
+  <div data-con-partida class="hidden">
+    <div class="grid gap-3">
+    <BotonPrincipal href="/jugar" texto="Continuar partida" detalle="Retoma donde lo dejaste" />
+    <button
+      type="button"
+      data-nueva-partida
+      data-destino={ruta('/jugar')}
+      class="flex min-h-14 w-full flex-col items-center justify-center rounded-2xl border border-champan-500/50 bg-noche-900/60 px-6 py-2 text-center text-champan-400 backdrop-blur transition hover:bg-noche-800/80 active:scale-[0.98]"
+    >
+      <span class="font-sans text-base font-bold tracking-wide uppercase">Nueva partida</span>
+      <span class="mt-0.5 font-sans text-xs opacity-75">Se pierde el progreso actual</span>
+    </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { borrarPartida, partidaEnCurso } from '../lib/partidaGuardada.ts';
+
+  const enCurso = partidaEnCurso();
+  document.querySelectorAll<HTMLElement>('.boton-jugar').forEach((bloque) => {
+    if (!enCurso) return;
+    bloque.querySelector('[data-sin-partida]')?.classList.add('hidden');
+    const con = bloque.querySelector<HTMLElement>('[data-con-partida]');
+    con?.classList.remove('hidden');
+    const detalle = con?.querySelector('a span + span');
+    if (detalle) detalle.textContent = `Llevas ${enCurso.hechas} de ${enCurso.total} misiones`;
+    const nueva = bloque.querySelector<HTMLButtonElement>('[data-nueva-partida]');
+    nueva?.addEventListener('click', () => {
+      borrarPartida();
+      window.location.href = nueva.dataset.destino ?? '/jugar';
+    });
+  });
+</script>
